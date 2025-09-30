@@ -130,7 +130,7 @@ src/
 ### Instalación
 1. Clona el repositorio:
    ```bash
-   git clone <url-del-repositorio>
+   git clone git@github.com:jhonnycgarcia/angular-devs-llc.git
    cd devs-llc-angular-project
    ```
 
