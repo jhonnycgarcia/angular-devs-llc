@@ -1,0 +1,47 @@
+@if (isOpen()) {
+  <div
+    class="modal-backdrop"
+    (click)="handleBackdropClick($event)"
+    (keydown.escape)="close()"
+    data-testid="modal-backdrop"
+  >
+    <div
+      class="modal-dialog"
+      role="dialog"
+      [attr.aria-labelledby]="title() ? 'modal-title' : null"
+      [attr.aria-describedby]="'modal-content'"
+      aria-modal="true"
+      tabindex="-1"
+      data-testid="modal-dialog"
+    >
+      @if (title()) {
+        <div class="modal-header" data-testid="modal-header">
+          <h2 id="modal-title" class="modal-title" data-testid="modal-title">
+            {{ title() }}
+          </h2>
+          @if (showCloseButton()) {
+          <button
+            ui-button
+            variant="secondary"
+            size="small"
+            ariaLabel="Cerrar modal"
+            (buttonClick)="close()"
+          >
+            ✕
+          </button>
+          }
+        </div>
+      }
+
+      <div id="modal-content" class="modal-content" data-testid="modal-content">
+        <ng-content />
+      </div>
+
+      @if (showFooter()) {
+        <div class="modal-footer" data-testid="modal-footer">
+          <ng-content select="[slot=footer]" />
+        </div>
+      }
+    </div>
+  </div>
+}

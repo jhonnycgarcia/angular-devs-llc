@@ -1,0 +1,111 @@
+<section class="action-section" role="search" aria-label="Product search and actions">
+  <search-input
+    data-testid="product-list-search"
+    label="Buscar productos"
+    placeholder="Buscar producto..."
+    ariaLabel="Buscar productos"
+    (onInputChange)="queryString.set($event)"
+  />
+  <div>
+    <add-product-button data-testid="product-list-add-button" />
+  </div>
+</section>
+
+<card>
+  <div class="table-container">
+    <table
+      data-testid="product-list-table"
+      class="product-table"
+      role="table"
+      [attr.aria-label]="'Product list showing ' + totalRecords() + ' products'"
+    >
+      <thead>
+        <tr role="row">
+          <th scope="col">Logo</th>
+          <th scope="col">Nombre del Producto</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Fecha de liberación</th>
+          <th scope="col">Fecha de revisión</th>
+          <th scope="col">
+            <span class="sr-only">Actions</span>
+            <gear-icon [size]="24" [attr.aria-hidden]="true" />
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+
+        @if(!isLoading()){
+          @for(record of paginatedProducts() ; track record.id){
+              <tr [attr.data-testid]="'product-row-' + record.id">
+                <td>
+                  <ui-logo [src]="record.logo"></ui-logo>
+                </td>
+                <td>{{ record.name }}</td>
+                <td>{{ record.description }}</td>
+                  <td>{{ record.date_release | date:'dd/MM/yyyy' }}</td>
+                <td>{{ record.date_revision | date:'dd/MM/yyyy' }}</td>
+                <td>
+                  <ui-dropdown
+                    [attr.data-testid]="'product-actions-' + record.id"
+                    [options]="actions"
+                    (select)="onAction($event, record)"
+                  />
+                </td>
+              </tr>
+            } @empty {
+
+            @if(queryString().length > 0) {
+              <tr data-testid="product-no-results">
+                <td colspan="6" align="center">
+                  No se encontraron productos que coincidan con "{{ queryString() }}".
+                </td>
+              </tr>
+            } @else {
+              <ng-container *ngTemplateOutlet="notFoundTemplate"></ng-container>
+            }
+          }
+        } @else {
+          <ng-container *ngTemplateOutlet="loadingTemplate"></ng-container>
+        }
+
+      </tbody>
+   </table>
+ </div>
+  <ui-pagination
+    data-testid="product-list-pagination"
+    [currentPage]="currentPage()"
+    [totalPages]="totalPages()"
+    [pageSize]="pageSize()"
+    [pageSizes]="[5, 10, 20, 50]"
+    [totalItems]="totalRecords()"
+    (pageChange)="goToPage($event)"
+    (pageSizeChange)="onPageSizeChange($event)"
+  />
+</card>
+
+<ng-template #loadingTemplate>
+  @for(sk of [1, 2, 3, 4, 5]; track sk) {
+    <tr data-testid="product-loading">
+      <td colspan="6" align="center">
+        <ui-skeleton size="large" />
+      </td>
+    </tr>
+  }
+</ng-template>
+
+<ng-template #notFoundTemplate>
+  <tr data-testid="product-empty">
+    <td colspan="6" align="center">
+      No hay productos disponibles.
+    </td>
+  </tr>
+</ng-template>
+
+<modal-product-delete
+  data-testid="product-delete-modal"
+  [showDeleteModal]="showDeleteModal()"
+  [isDeleting]="isDeleting()"
+  [productName]="productApi.selectedProduct()?.name ?? null"
+  (executeDelete)="executeDelete()"
+  (cancelDelete)="cancelDelete()"
+/>

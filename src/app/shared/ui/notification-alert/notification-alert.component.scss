@@ -1,0 +1,77 @@
+.notification-alert {
+  width: 100%;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.15);
+  padding: 0.5rem;
+
+  // Estilos de colores para diferentes tipos de alerta
+  &.success {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+  }
+
+  &.danger {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+  }
+
+  .notification-content {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+
+    .notification-header {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      flex: 1;
+
+      .icon-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .notification-title {
+        margin: 0;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: inherit;
+        display: none; // Ocultar títulos para diseño más compacto
+      }
+    }
+
+    .notification-body {
+      flex: 1;
+
+      .notification-message {
+        margin: 0;
+        font-size: 0.8125rem;
+        line-height: 1.4;
+        color: inherit;
+      }
+    }
+  }
+
+  // Responsive design
+  @media (max-width: 768px) {
+    padding: 0.375rem;
+
+    .notification-content {
+      gap: 0.25rem;
+
+      .notification-header {
+        gap: 0.25rem;
+      }
+
+      .notification-body {
+        .notification-message {
+          font-size: 0.75rem;
+        }
+      }
+    }
+  }
+}

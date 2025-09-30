@@ -1,0 +1,151 @@
+<card>
+  <form
+    [formGroup]="form"
+    (ngSubmit)="onSubmit()"
+    class="product-form"
+    role="form"
+    [attr.aria-labelledby]="'edit-form-title'"
+    data-testid="product-edit-form"
+  >
+    <h2 id="edit-form-title" class="sr-only">Formulario de Edición de Producto</h2>
+    <div class="form-group">
+      <label for="id" class="form-label">
+        ID del Producto
+      </label>
+      <input
+        type="text"
+        id="id"
+        formControlName="id"
+        class="form-input"
+        placeholder="Ingrese el ID del producto"
+        data-testid="product-edit-id-input"
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="name" class="form-label">
+        Nombre del Producto <span class="danger">*</span>
+      </label>
+      <input
+        type="text"
+        id="name"
+        formControlName="name"
+        class="form-input"
+        [class.submitted]="submitted()"
+        placeholder="Ingrese el nombre del producto"
+        data-testid="product-edit-name-input"
+      >
+      @let fName = f['name']!;
+      @if(fName.invalid && submitted()){
+        <div class="error-message" role="alert" aria-live="polite">
+          @for(error of fName.errors | keyvalue; track 'fName-'+error.key){
+            <span>{{ getVmMessage('name', error.key) }}</span>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="description" class="form-label">
+        Descripción <span class="danger">*</span>
+      </label>
+      <textarea
+        id="description"
+        formControlName="description"
+        class="form-textarea"
+        placeholder="Ingrese la descripción del producto"
+        rows="4"
+        data-testid="product-edit-description-input"
+      ></textarea>
+      @let fDescription = f['description']!;
+      @if(fDescription.invalid && submitted()){
+        <div class="error-message" role="alert" aria-live="polite">
+          @for(error of fDescription.errors | keyvalue; track 'fDescription-'+error.key){
+            <span>{{ getVmMessage('description', error.key) }}</span>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="logo" class="form-label">
+        Logo <span class="danger">*</span>
+      </label>
+      <input
+        type="url"
+        id="logo"
+        formControlName="logo"
+        class="form-input"
+        placeholder="logo.png"
+        data-testid="product-edit-logo-input"
+      >
+      @let fLogo = f['logo']!;
+      @if(fLogo.invalid && submitted()){
+        <div class="error-message" role="alert" aria-live="polite">
+          @for(error of fLogo.errors | keyvalue; track 'fLogo-'+error.key){
+            <span>{{ getVmMessage('logo', error.key) }}</span>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="releaseDate" class="form-label">
+        Fecha de Liberación <span class="danger">*</span>
+      </label>
+      <input
+        type="date"
+        id="releaseDate"
+        formControlName="releaseDate"
+        class="form-input"
+        [min]="currentDate"
+        data-testid="product-edit-release-date-input"
+      >
+      @let frd = f['releaseDate']!;
+      @if(frd.invalid && submitted()){
+        <div class="error-message" role="alert" aria-live="polite">
+          @for(error of frd.errors | keyvalue; track 'frd-'+error.key){
+            <span>{{ getVmMessage('releaseDate', error.key) }}</span>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="reviewDate" class="form-label">Fecha de Revisión</label>
+      <input
+        type="date"
+        id="reviewDate"
+        formControlName="reviewDate"
+        class="form-input"
+        data-testid="product-edit-review-date-input"
+      >
+    </div>
+
+    <hr>
+
+    <div class="form-actions">
+      <button
+        ui-button
+        type="button"
+        variant="danger"
+        size="large"
+        [disabled]="isLoading()"
+        (click)="onCancel()"
+        data-testid="cancel-edit-button"
+      >
+       Cancelar
+      </button>
+      <button
+        ui-button
+        type="submit"
+        variant="primary"
+        size="large"
+        [disabled]="isLoading()"
+        data-testid="submit-edit-button"
+      >
+        {{ isLoading() ? 'Actualizando...' : 'Actualizar' }}
+      </button>
+    </div>
+  </form>
+</card>

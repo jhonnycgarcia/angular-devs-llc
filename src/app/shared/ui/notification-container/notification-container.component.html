@@ -1,0 +1,20 @@
+<div class="notification-container">
+  @for (notification of notifications(); track trackByNotificationId($index, notification)) {
+    <div class="notification-wrapper" [style.animation-delay.ms]="($index * 100)">
+      <app-notification-alert
+        [type]="notification.type"
+        [message]="notification.message">
+      </app-notification-alert>
+      <button
+        class="close-button"
+        (click)="onCloseNotification(notification.id)"
+        aria-label="Cerrar notificación">
+        ×
+      </button>
+    </div>
+  } @empty {
+    <div class="no-notifications">
+      <!-- Estado vacío - no se muestran notificaciones -->
+    </div>
+  }
+</div>
